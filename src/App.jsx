@@ -5,12 +5,16 @@ import Navbar from './components/Navbar'
 import './index.css'
 import Login from './pages/Login'
 import Register from './pages/Register'
+import Aboutus from './pages/Aboutus'
+import Contactus from './pages/Contactus'
 
 const App = () => {
   return (
     <>
       <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route path="/aboutus" element={<Aboutus />} />
+        <Route path="/contactus" element={<Contactus />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
       </Routes>
