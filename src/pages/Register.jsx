@@ -1,10 +1,10 @@
-export default function Login() {
+export default function Register() {
     return (
         <>
             <div className="flex min-h-screen flex-1 flex-col justify-center px-6 py-12 lg:px-8 background-color bg-black">
                 <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                     <h2 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-white">
-                        Sign in to your account
+                        Create your account
                     </h2>
                 </div>
 
@@ -60,7 +60,7 @@ export default function Login() {
                                 type="submit"
                                 className="flex w-full justify-center rounded-md bg-white px-3 py-1.5 text-sm/6 font-semibold text-black shadow-sm border border-transparent hover:border-white hover:text-white hover:bg-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                             >
-                                Sign in
+                                Sign up
                             </button>
 
                         </div>
