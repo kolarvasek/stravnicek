@@ -38,8 +38,8 @@ export default function Register() {
                                     Password
                                 </label>
                                 <div className="text-sm">
-                                    <a href="/register" className="font-semibold text-white hover:text-white">
-                                        Not Registered?
+                                    <a href="/login" className="font-semibold text-white hover:text-white">
+                                        Already Registered?
                                     </a>
                                 </div>
                             </div>
@@ -60,7 +60,7 @@ export default function Register() {
                                 type="submit"
                                 className="flex w-full justify-center rounded-md bg-white px-3 py-1.5 text-sm/6 font-semibold text-black shadow-sm border border-transparent hover:border-white hover:text-white hover:bg-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                             >
-                                Sign up
+                                Register
                             </button>
 
                         </div>
