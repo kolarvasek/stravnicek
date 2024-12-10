@@ -4,6 +4,7 @@ import HomePage from './pages/HomePage'
 import Navbar from './components/Navbar'
 import './index.css'
 import Login from './pages/Login'
+import Register from './pages/Register'
 
 const App = () => {
   return (
@@ -11,6 +12,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/login" element={<Register />} />
       </Routes>
     </>
   );
