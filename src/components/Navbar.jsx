@@ -11,15 +11,8 @@ const Navbar = () => {
       <div className="flex-1 flex justify-center space-x-4">
         <button
           onClick={() => navigate("/food")}
-          className="text-lg font-semibold"
-        >
+          className="text-lg font-semibold">
           Food
-        </button>
-        <button
-          onClick={() => navigate("/kokotiny")}
-          className="text-lg font-semibold"
-        >
-          Kokotiny
         </button>
       </div>
       <button
