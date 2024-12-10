@@ -4,12 +4,30 @@ import { useNavigate } from "react-router-dom";
 const Navbar = () => {
   const navigate = useNavigate();
   return (
-    <div className="flex justify-between">
-      <button onClick={() => navigate("/")} className="float-left">Home</button>
-      <div className="flex">
-        <button onClick={() => navigate("/food")} className="ml-10">Food</button>
-        <button onClick={() => navigate("/logout")} className="ml-auto">Logout</button>
+    <div className="flex justify-between items-center p-4 bg-black text-white">
+      <button onClick={() => navigate("/")} className="text-lg font-semibold">
+        Home
+      </button>
+      <div className="flex-1 flex justify-center space-x-4">
+        <button
+          onClick={() => navigate("/food")}
+          className="text-lg font-semibold"
+        >
+          Food
+        </button>
+        <button
+          onClick={() => navigate("/kokotiny")}
+          className="text-lg font-semibold"
+        >
+          Kokotiny
+        </button>
       </div>
+      <button
+        onClick={() => navigate("/logout")}
+        className="text-lg font-semibold"
+      >
+        Logout
+      </button>
     </div>
   );
 };
