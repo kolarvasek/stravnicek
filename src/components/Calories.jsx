@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { LineChart } from "@mui/x-charts/LineChart";
 import Modal from "@mui/material/Modal";
-import Navbar from "../components/Navbar"; 
+import Navbar from "../components/Navbar";
 import $ from "jquery";
+
 
 
 const Calories = () => {
@@ -29,6 +30,29 @@ const Calories = () => {
       fats: parseFloat(fats) || 0,
       sugar: parseFloat(sugar) || 0,
     };
+  };
+  const [name, setName] = useState("");
+  const [result, setResult] = useState("");
+
+  const handleChange = (e) => {
+      setName(e.target.value);
+      setCalories(e.target.value);
+      setProtein(e.target.value);
+      setFats(e.target.value);
+      setSugar(e.target.value);
+  };
+
+  const handleSubmit = (e) => {
+      e.preventDefault();
+      const form = $(e.target);
+      $.ajax({
+          type: "POST",
+          url: form.attr("action"),
+          data: form.serialize(),
+          success(data) {
+              setResult(data);
+          },
+      });
   };
 
   return (
@@ -72,55 +96,67 @@ const Calories = () => {
               <h2 className="text-xl font-semibold mb-4 text-center">
                 Add a Meal
               </h2>
-              <input
-                type="text"
-                name="mealName"
-                placeholder="Enter meal"
-                className="border border-gray-300 rounded-md p-2 mb-3 w-full"
-                value={inputSearch}
-                onChange={(e) => setInputSearch(e.target.value)}
-              />
-              <input
-                type="number"
-                name="calories"
-                placeholder="Calories"
-                className="border border-gray-300 rounded-md p-2 mb-3 w-full"
-                value={calories}
-                onChange={(e) => setCalories(e.target.value)}
-              />
-              <input
-                type="number"
-                name="protein"
-                placeholder="Protein (g)"
-                className="border border-gray-300 rounded-md p-2 mb-3 w-full"
-                value={protein}
-                onChange={(e) => setProtein(e.target.value)}
-              />
-              <input
-                type="number"
-                name="fats"
-                placeholder="Fats (g)"
-                className="border border-gray-300 rounded-md p-2 mb-3 w-full"
-                value={fats}
-                onChange={(e) => setFats(e.target.value)}
-              />
-              <input
-                type="number"
-                name="sugar"
-                placeholder="Sugar (g)"
-                className="border border-gray-300 rounded-md p-2 mb-4 w-full"
-                value={sugar}
-                onChange={(e) => setSugar(e.target.value)}
-              />
-              <button
-                onClick={() => {
-                  handleAddMeal();
-                  handleClose();
-                }}
-                className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg w-full transition duration-300"
-              >
-                Submit
-              </button>
+              <form action="http://localhost:8000/server.php" method="post" onSubmit={(event) => handleSubmit(event)}>
+                <input
+                  type="text"
+                  name="mealName"
+                  placeholder="Enter meal"
+                  className="border border-gray-300 rounded-md p-2 mb-3 w-full"
+                  value={name}
+                  onChange={(event) =>
+                    handleChange(event)
+                }
+                />
+                <input
+                  type="number"
+                  name="calories"
+                  placeholder="Calories"
+                  className="border border-gray-300 rounded-md p-2 mb-3 w-full"
+                  value={calories}
+                  onChange={(event) =>
+                    handleChange(event)
+                }
+                />
+                <input
+                  type="number"
+                  name="protein"
+                  placeholder="Protein (g)"
+                  className="border border-gray-300 rounded-md p-2 mb-3 w-full"
+                  value={protein}
+                  onChange={(event) =>
+                    handleChange(event)
+                }
+                />
+                <input
+                  type="number"
+                  name="fats"
+                  placeholder="Fats (g)"
+                  className="border border-gray-300 rounded-md p-2 mb-3 w-full"
+                  value={fats}
+                  onChange={(event) =>
+                    handleChange(event)
+                }
+                />
+                <input
+                  type="number"
+                  name="sugar"
+                  placeholder="Sugar (g)"
+                  className="border border-gray-300 rounded-md p-2 mb-4 w-full"
+                  value={sugar}
+                  onChange={(event) =>
+                    handleChange(event)
+                }
+                />
+                <button
+                  onClick={() => {
+                    handleAddMeal();
+                    handleClose();
+                  }}
+                  className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg w-full transition duration-300"
+                >
+                  Submit
+                </button>
+              </form>
             </div>
           </div>
         </Modal>
