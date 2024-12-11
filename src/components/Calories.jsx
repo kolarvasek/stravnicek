@@ -31,10 +31,8 @@ const Calories = () => {
 
   return (
     <div className="bg-gray-100 h-screen">
-      <Navbar /> {/* Make sure Navbar is included */}
+      <Navbar />
       <div className="pt-24">
-        {" "}
-        {/* Add padding top to prevent overlap with Navbar */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 p-5">
           <div className="container shadow-xl hover:shadow-2xl transition-all duration-300 ease-in-out p-6 rounded-lg bg-slate-200 max-h-96">
             <h3 className="text-center text-2xl font-semibold text-gray-800 mb-4">
