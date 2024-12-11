@@ -9,27 +9,23 @@ const Navbar = () => {
         <div className="flex-1 flex justify-left space-x-4">
           <button
             onClick={() => navigate("/")}
-            className="text-lg font-semibold"
-          >
+            className="text-lg font-semibold">
             Home
           </button>
           <button
             onClick={() => navigate("/aboutus")}
-            className="text-lg font-semibold"
-          >
+            className="text-lg font-semibold">
             About Us
           </button>
           <button
             onClick={() => navigate("/contactus")}
-            className="text-lg font-semibold"
-          >
+            className="text-lg font-semibold">
             Contact Us
           </button>
         </div>
         <button
           onClick={() => navigate("/logout")}
-          className="text-lg font-semibold"
-        >
+          className="text-lg font-semibold">
           Logout
         </button>
       </div>
