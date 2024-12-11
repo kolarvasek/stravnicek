@@ -2,72 +2,18 @@ import React, { useEffect, useState } from "react";
 import { LineChart } from "@mui/x-charts/LineChart";
 import Modal from "@mui/material/Modal";
 import Navbar from "../components/Navbar";
+import LogInfo from "../components/LogInfo";
 import $ from "jquery";
-
-
 
 const Calories = () => {
   const [kalorie, setKalorie] = useState(0);
   const [chartKalorie, setChartKalorie] = useState([]);
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-  const [inputSearch, setInputSearch] = useState("");
-  const [calories, setCalories] = useState("");
-  const [protein, setProtein] = useState("");
-  const [fats, setFats] = useState("");
-  const [sugar, setSugar] = useState("");
+
+
 
   useEffect(() => {
     setChartKalorie([kalorie]);
   }, [kalorie]);
-
-  const handleAddMeal = () => {
-    const mealData = {
-      mealName: inputSearch,
-      calories: parseFloat(calories) || 0,
-      protein: parseFloat(protein) || 0,
-      fats: parseFloat(fats) || 0,
-      sugar: parseFloat(sugar) || 0,
-    };
-  };
-  const [name, setName] = useState("");
-  const [result, setResult] = useState("");
-
-  const handleChange = (e) => {
-    switch (e.target.name) {
-      case "mealName":
-        setInputSearch(e.target.value);
-        break;
-      case "calories":
-        setCalories(e.target.value);
-        break;
-      case "protein":
-        setProtein(e.target.value);
-        break;
-      case "fats":
-        setFats(e.target.value);
-        break;
-      case "sugar":
-        setSugar(e.target.value);
-        break;
-      default:
-        break;
-    }
-  };
-
-  const handleSubmit = (e) => {
-      e.preventDefault();
-      const form = $(e.target);
-      $.ajax({
-          type: "POST",
-          url: form.attr("action"),
-          data: form.serialize(),
-          success(data) {
-              setResult(data);
-          },
-      });
-  };
 
   return (
     <div className="bg-gray-100 h-screen">
@@ -91,84 +37,7 @@ const Calories = () => {
             />
           </div>
         </div>
-        <div className="bttn flex justify-center mt-8">
-          <button
-            onClick={handleOpen}
-            className="rounded-xl bg-blue-500 p-4 text-xl text-white hover:bg-blue-600 transition duration-300"
-          >
-            Add Meal
-          </button>
-        </div>
-        <Modal
-          open={open}
-          onClose={handleClose}
-          aria-labelledby="simple-modal-title"
-          aria-describedby="simple-modal-description"
-        >
-          <div className="flex justify-center items-center h-screen bg-black bg-opacity-50">
-            <div className="bg-white text-black shadow-lg rounded-lg p-6 w-96">
-              <h2 className="text-xl font-semibold mb-4 text-center">
-                Add a Meal
-              </h2>
-              <form action="http://localhost:3000/server.php" method="post" onSubmit={(event) => handleSubmit(event)}>
-                <input
-                  type="text"
-                  name="mealName"
-                  placeholder="Enter meal"
-                  className="border border-gray-300 rounded-md p-2 mb-3 w-full"
-                  onChange={(event) =>
-                    handleChange(event)
-                }
-                />
-                <input
-                  type="number"
-                  name="calories"
-                  placeholder="Calories"
-                  className="border border-gray-300 rounded-md p-2 mb-3 w-full"
-                  onChange={(event) =>
-                    handleChange(event)
-                }
-                />
-                <input
-                  type="number"
-                  name="protein"
-                  placeholder="Protein (g)"
-                  className="border border-gray-300 rounded-md p-2 mb-3 w-full"
-                  onChange={(event) =>
-                    handleChange(event)
-                }
-                />
-                <input
-                  type="number"
-                  name="fats"
-                  placeholder="Fats (g)"
-                  className="border border-gray-300 rounded-md p-2 mb-3 w-full"
-                  onChange={(event) =>
-                    handleChange(event)
-                }
-                />
-                <input
-                  type="number"
-                  name="sugar"
-                  placeholder="Sugar (g)"
-                  className="border border-gray-300 rounded-md p-2 mb-4 w-full"
-                  onChange={(event) =>
-                    handleChange(event)
-                }
-                />
-                <button
-                  onClick={() => {
-                    handleAddMeal();
-                    handleClose();
-                  }}
-                  className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg w-full transition duration-300"
-                >
-                  Submit
-                </button>
-              </form>
-            </div>
-          </div>
-        </Modal>
+        <LogInfo />
       </div>
     </div>
   );
