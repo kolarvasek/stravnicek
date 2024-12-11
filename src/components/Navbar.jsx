@@ -6,7 +6,7 @@ const Navbar = () => {
   return (
     <div className="fixed top-0 left-0 right-0 p-4 bg-black text-white z-10">
       <div className="flex justify-between items-center">
-        <div className="flex-1 flex justify-center space-x-4">
+        <div className="flex-1 flex justify-left space-x-4">
           <button
             onClick={() => navigate("/")}
             className="text-lg font-semibold"
