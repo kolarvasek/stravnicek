@@ -5,16 +5,18 @@ import { useEffect, useRef, useState } from "react";
 
 export default function Login() {
 
-const passwordRef = useRef()
-const [passwordSave, setPasswordSave] = useState("")
+    const passwordRef = useRef()
+    const [passwordSave, setPasswordSave] = useState("")
+    const emailRef = useRef()
+    const [emailSave, setEmailSave] = useState("")
 
-const updateInput = () => {
-    setPasswordSave(passwordRef.current.value);
-    console.log(passwordSave);
+    const updateInput = () => {
+        setPasswordSave(passwordRef.current.value);
+        console.log(passwordSave);
+        setEmailSave(emailRef.current.value);
+        console.log(emailSave);
 
-}
-
-
+    }
 
     return (
         <>
@@ -36,6 +38,8 @@ const updateInput = () => {
                             </label>
                             <div className="mt-2">
                                 <input
+                                    ref={emailRef}
+                                    onChange={() => updateInput()}
                                     id="email"
                                     name="email"
                                     type="email"
@@ -62,8 +66,8 @@ const updateInput = () => {
                             </div>
                             <div className="mt-2">
                                 <input
-                                ref={passwordRef}
-                                onChange={() => updateInput()}
+                                    ref={passwordRef}
+                                    onChange={() => updateInput()}
                                     id="password"
                                     name="password"
                                     type="password"
