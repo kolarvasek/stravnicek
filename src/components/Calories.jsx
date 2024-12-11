@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { LineChart } from "@mui/x-charts/LineChart";
-import Modal from "@mui/material/Modal";
 import Navbar from "../components/Navbar";
 import LogInfo from "../components/LogInfo";
 import $ from "jquery";
@@ -8,9 +7,6 @@ import $ from "jquery";
 const Calories = () => {
   const [kalorie, setKalorie] = useState(0);
   const [chartKalorie, setChartKalorie] = useState([]);
-
-
-
   useEffect(() => {
     setChartKalorie([kalorie]);
   }, [kalorie]);

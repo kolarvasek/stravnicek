@@ -1,4 +1,5 @@
-import React from 'react'
+import React, {useState} from 'react'
+import Modal from "@mui/material/Modal";
 
 const LogInfo = () => {
     const [calories, setCalories] = useState("");
@@ -8,6 +9,22 @@ const LogInfo = () => {
     const [inputSearch, setInputSearch] = useState("");
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+    const handleSubmit = (e) => {}
+    const [open, setOpen] = useState(false);
+
+
+    const fetchData = async () => {
+        try {
+            const response = await fetch(
+              `http://localhost/stravnicek/php/server.php`
+            );
+            const data = await response.json();
+            console.log(data);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
 
     const handleChange = (e) => {
     const { name, value } = e.target;
