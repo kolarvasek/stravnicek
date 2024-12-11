@@ -54,7 +54,7 @@ const LogInfo = () => {
       <div className="bttn flex justify-center mt-8">
         <button
           onClick={handleOpen}
-          className="rounded-xl bg-blue-500 p-4 text-xl text-white hover:bg-blue-600 transition duration-300"
+          className="rounded-xl bg-blue-500 p-4 text-xl text-white hover:bg-blue-670 transition duration-300"
         >
           Add Meal
         </button>
