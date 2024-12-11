@@ -110,7 +110,7 @@ const Calories = () => {
               <h2 className="text-xl font-semibold mb-4 text-center">
                 Add a Meal
               </h2>
-              <form action="http://localhost:8000/server.php" method="post" onSubmit={(event) => handleSubmit(event)}>
+              <form action="http://localhost:3000/server.php" method="post" onSubmit={(event) => handleSubmit(event)}>
                 <input
                   type="text"
                   name="mealName"
