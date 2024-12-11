@@ -1,4 +1,16 @@
 export default function Register() {
+    const passwordRef = useRef()
+    const [passwordSave, setPasswordSave] = useState("")
+    const emailRef = useRef()
+    const [emailSave, setEmailSave] = useState("")
+
+    const updateInput = () => {
+        setPasswordSave(passwordRef.current.value);
+        console.log(passwordSave);
+        setEmailSave(emailRef.current.value);
+        console.log(emailSave);
+
+    }
     return (
         <>
             <div className="flex min-h-screen flex-1 flex-col justify-center px-6 py-12 lg:px-8 background-color bg-black">
@@ -19,6 +31,8 @@ export default function Register() {
                             </label>
                             <div className="mt-2">
                                 <input
+                                ref={emailRef}
+                                onChange={() => updateInput()}
                                     id="email"
                                     name="email"
                                     type="email"
@@ -45,6 +59,8 @@ export default function Register() {
                             </div>
                             <div className="mt-2">
                                 <input
+                                ref={passwordRef}
+                                onChange={() => updateInput()}
                                     id="password"
                                     name="password"
                                     type="password"
