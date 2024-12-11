@@ -35,11 +35,25 @@ const Calories = () => {
   const [result, setResult] = useState("");
 
   const handleChange = (e) => {
-      setName(e.target.value);
-      setCalories(e.target.value);
-      setProtein(e.target.value);
-      setFats(e.target.value);
-      setSugar(e.target.value);
+    switch (e.target.name) {
+      case "mealName":
+        setInputSearch(e.target.value);
+        break;
+      case "calories":
+        setCalories(e.target.value);
+        break;
+      case "protein":
+        setProtein(e.target.value);
+        break;
+      case "fats":
+        setFats(e.target.value);
+        break;
+      case "sugar":
+        setSugar(e.target.value);
+        break;
+      default:
+        break;
+    }
   };
 
   const handleSubmit = (e) => {
@@ -102,7 +116,6 @@ const Calories = () => {
                   name="mealName"
                   placeholder="Enter meal"
                   className="border border-gray-300 rounded-md p-2 mb-3 w-full"
-                  value={name}
                   onChange={(event) =>
                     handleChange(event)
                 }
@@ -112,7 +125,6 @@ const Calories = () => {
                   name="calories"
                   placeholder="Calories"
                   className="border border-gray-300 rounded-md p-2 mb-3 w-full"
-                  value={calories}
                   onChange={(event) =>
                     handleChange(event)
                 }
@@ -122,7 +134,6 @@ const Calories = () => {
                   name="protein"
                   placeholder="Protein (g)"
                   className="border border-gray-300 rounded-md p-2 mb-3 w-full"
-                  value={protein}
                   onChange={(event) =>
                     handleChange(event)
                 }
@@ -132,7 +143,6 @@ const Calories = () => {
                   name="fats"
                   placeholder="Fats (g)"
                   className="border border-gray-300 rounded-md p-2 mb-3 w-full"
-                  value={fats}
                   onChange={(event) =>
                     handleChange(event)
                 }
@@ -142,7 +152,6 @@ const Calories = () => {
                   name="sugar"
                   placeholder="Sugar (g)"
                   className="border border-gray-300 rounded-md p-2 mb-4 w-full"
-                  value={sugar}
                   onChange={(event) =>
                     handleChange(event)
                 }
