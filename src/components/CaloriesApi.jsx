@@ -43,6 +43,8 @@ const CaloriesApi = ({ query }) => {
     }
   }
 
+  useEffect(() => {sendNutritionData(nutritionData)},[nutritionData])
+
   return (
     <div>
       <h1>Nutrition Data</h1>

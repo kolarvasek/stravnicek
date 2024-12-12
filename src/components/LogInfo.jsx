@@ -18,6 +18,7 @@ const LogInfo = () => {
       console.log(text);
       const data = JSON.parse(text); // convert text to JSON
       console.log(data);
+      setOpen(false)          
     } catch (error) {
       console.error(error);
     }
