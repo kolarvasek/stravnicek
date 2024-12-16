@@ -10,7 +10,9 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 $rawData = file_get_contents("php://input");
 $data = json_decode($rawData, true);
 
-echo json_encode($data);
+$items = $data["items"];
+echo json_encode(['aha' => 'textst']);
+
 
 // pro vypisovani se pouzije funkce json_encode ( vypisovani na server.php zatim nefunguje nvm proc, ale poslani veci do db by melo fungovat)
 // ziskat veci z promeny data
