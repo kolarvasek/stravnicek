@@ -7,7 +7,7 @@ const HomePage = () => {
   const navigate = useNavigate();
 
   return (
-    <div>
+    <div className="overscroll-y-none	">
       <Navbar />
       <Calorie />
     </div>
