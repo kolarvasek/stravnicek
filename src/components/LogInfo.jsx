@@ -12,12 +12,13 @@ const LogInfo = () => {
     e.preventDefault();
     try {
       const response = await fetch(
-        `http://localhost/stravnicek/php/server.php?name=${inputSearch}`
+        `http://localhost/stravnicek/php/server.php?name=${inputSearch}`, {
+          method: "GET",
+        }
+
       );
       const text = await response.text();
       console.log(text);
-      const data = JSON.parse(text); // convert text to JSON
-      console.log(data);
       setOpen(false)          
     } catch (error) {
       console.error(error);
@@ -54,7 +55,7 @@ const LogInfo = () => {
             <h2 className="text-xl font-semibold mb-4 text-center">
               Add a Meal
             </h2>
-            <form onSubmit={handleSubmit} method="get">
+            <form onSubmit={handleSubmit}>
               <input
                 type="text"
                 name="mealName"
@@ -65,6 +66,7 @@ const LogInfo = () => {
               <button
                 type="submit"
                 className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg w-full transition duration-300">
+                
                 Submit
               </button>
             </form>

@@ -7,6 +7,7 @@ import $ from "jquery";
 const Calories = () => {
   const [kalorie, setKalorie] = useState(0);
   const [chartKalorie, setChartKalorie] = useState([]);
+  
   useEffect(() => {
     setChartKalorie([kalorie]);
   }, [kalorie]);
