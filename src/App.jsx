@@ -7,6 +7,7 @@ import Login from './pages/Login'
 import Register from './pages/Register'
 import Aboutus from './pages/Aboutus'
 import Contactus from './pages/Contactus'
+import Meals from './pages/Meals'
 
 const App = () => {
   return (
@@ -17,6 +18,7 @@ const App = () => {
         <Route path="/contactus" element={<Contactus />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/meals" element={<Meals />} />
       </Routes>
     </>
   );
