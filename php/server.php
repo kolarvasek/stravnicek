@@ -19,4 +19,5 @@ echo json_encode(['aha' => 'textst']);
 // poslat veci do databaze podle user_id(pridat do db)
 // vytahnout vsechny veci daneho uzivatele z databaze a ty pak vypsat do Recent Meals z Calories.jsx
 
+
 ?>
