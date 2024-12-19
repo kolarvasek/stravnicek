@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { mealInfo } from "../components/Mealinfo";
 
 const CaloriesApi = ({ query }) => {
   const [nutritionData, setNutritionData] = useState(null);
@@ -65,23 +66,7 @@ const CaloriesApi = ({ query }) => {
   return (
     <div>
       <h1>Nutrition Data</h1>
-      {nutritionData ? (
-        <div>
-          {nutritionData.items.map((item, index) => (
-            <div key={index}>
-              <h2>{item.name}</h2>
-              <ul>
-                <li>Calories: {item.calories}</li>
-                <li>Protein: {item.protein_g}</li>
-                <li>Carbs: {item.carbohydrates_total_g}g</li>
-                <li>Fat: {item.fat_total_g}g</li>
-              </ul>
-            </div>
-          ))}
-        </div>
-      ) : (
-        <p>Loading...</p>
-      )}
+
     </div>
   );
 };
