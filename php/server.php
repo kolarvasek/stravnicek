@@ -10,9 +10,9 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 $rawData = file_get_contents("php://input");
 $data = json_decode($rawData, true);
 
-$items = $data["items"];
+$items = $data['items'];
+echo json_encode($items);
 
-echo json_encode(['aha' => 'textst']);
 
 
 // pro vypisovani se pouzije funkce json_encode

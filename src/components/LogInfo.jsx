@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
 import Modal from "@mui/material/Modal";
-import CaloriesApi from "./CaloriesApi";
 import { mealInfo } from "../components/Mealinfo";
 
 const LogInfo = () => {
   const [inputSearch, setInputSearch] = useState("");
   const [open, setOpen] = useState(false);
   const [nutritionData, setNutritionData] = useState(null);
-
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
@@ -15,9 +13,9 @@ const LogInfo = () => {
     e.preventDefault();
     try {
       const response = await fetch(
-        `http://localhost/stravnicek/php/server.php?name=${inputSearch}`,
+        `http://localhost/stravnicek/php/server.php`,
         {
-          method: "GET",
+          method: "POST",
         }
       );
       const text = await response.text();
