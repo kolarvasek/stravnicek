@@ -20,7 +20,7 @@ const Register = () => {
           body: JSON.stringify(data), // Convert value to JSON
         }
       );
-
+// ahong
       const text = await response.text();
       console.log("Raw response:", text);
 
