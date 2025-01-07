@@ -6,6 +6,7 @@ const LogInfo = () => {
   const [inputSearch, setInputSearch] = useState("");
   const [open, setOpen] = useState(false);
   const [nutritionData, setNutritionData] = useState(null);
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
@@ -13,43 +14,54 @@ const LogInfo = () => {
     e.preventDefault();
     try {
       const response = await fetch(
-        `http://localhost/stravnicek/php/server.php`,
+        `https://api.calorieninjas.com/v1/nutrition?query=${inputSearch}`,
         {
-          method: "POST",
+          method: "GET",
+          headers: {
+            "X-Api-Key": import.meta.env.VITE_CALORIES_API,
+            "Content-Type": "application/json",
+          },
         }
       );
-      const text = await response.text();
-      console.log(text);
+      const result = await response.json();
+      setNutritionData(result);
+
+      // Send the nutrition data to the backend
+      await sendNutritionData(result.items);
       setOpen(false);
     } catch (error) {
-      console.error(error);
+      console.error("Error fetching data:", error);
     }
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          `https://api.calorieninjas.com/v1/nutrition?query=${inputSearch}`,
-          {
-            method: "GET",
-            headers: {
-              "X-Api-Key": import.meta.env.VITE_CALORIES_API,
-              "Content-Type": "application/json",
-            },
-          }
-        );
-        const result = await response.json();
-        setNutritionData(result);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
+  const sendNutritionData = async (data) => {
+    try {
+      const response = await fetch(
+        "http://localhost/stravnicek/php/server.php",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ items: data }), // Convert value to JSON
+        }
+      );
 
-    if (inputSearch) {
-      fetchData();
+      const text = await response.text();
+      console.log("Raw response:", text);
+
+      // Parse response only if it's valid JSON
+      let parsedResponse;
+      try {
+        parsedResponse = JSON.parse(text);
+        console.log(parsedResponse);
+      } catch (error) {
+        console.error("Error parsing JSON response:", text);
+      }
+    } catch (error) {
+      console.error("Error sending data:", error);
     }
-  }, [inputSearch]);
+  };
 
   return (
     <div>
