@@ -15,6 +15,7 @@ echo json_encode($items);
 
 
 
+
 // pro vypisovani se pouzije funkce json_encode
 // poslat veci do databaze podle user_id(pridat do db)
 // vytahnout vsechny veci daneho uzivatele z databaze a ty pak vypsat do Recent Meals z Calories.jsx
