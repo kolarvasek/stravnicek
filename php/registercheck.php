@@ -4,17 +4,24 @@ session_start();
 
 header("Content-Type: application/json");
 
+$rawData = file_get_contents("php://input");
+$data = json_decode($rawData, true);
+
+$items = $data['items'];
+echo json_encode($items);   
+
+
 // Validate email
-if (isset($_POST["email"]) && !empty($_POST["email"]) && filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)) {
-    $email = $_POST["email"];
+if (isset($items["email"]) && !empty($items["email"]) && filter_var($items["email"], FILTER_VALIDATE_EMAIL)) {
+    $email = $items["email"];
 } else {
     echo json_encode(["success" => false, "error" => "Invalid email"]);
     exit;
 }
 
 // Validate password
-if (isset($_POST["heslo"]) && !empty($_POST["heslo"])) {
-    $password = hash('sha256', $_POST["heslo"]); // Hash password
+if (isset($items["heslo"]) && !empty($items["heslo"])) {
+    $password = hash('sha256', $items["heslo"]); // Hash password
 } else {
     echo json_encode(["success" => false, "error" => "Password is required"]);
     exit;
