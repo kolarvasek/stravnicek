@@ -12,30 +12,24 @@ $data = json_decode($rawData, true);
 $items = $data['items'];
 
 foreach ($items as $item) {
-            $name = $item['name'];
-            $calories = $item['calories'];
-            $protein = $item['protein_g'];
-            $carbs = $item['carbohydrates_total_g'];
-            $fat = $item['fat_total_g'];
+    $name = $item['name'];
+    $calories = $item['calories'];
+    $protein = $item['protein_g'];
+    $carbs = $item['carbohydrates_total_g'];
+    $fat = $item['fat_total_g'];
+    $user_id = $_SESSION['ID']; 
 
-            $sql = "INSERT INTO food (name, user_id, calories, protein, carbs, fat, ) VALUES (:name,  :user_id, :calories, :protein, :carbs, :fat)";
-            $stmt = $db->prepare($sql);
-            $stmt->execute([
-                ':name' => $name,
-                ':calories' => $calories,
-                ':protein' => $protein,
-                ':carbs' => $carbs,
-                ':fat' => $fat,
-                ':user_id' => $_SESSION['user_id']
-            ]);
-        }
+    $sql = "INSERT INTO food (name, user_id, calories, protein, carbs, fat) VALUES (:name, :user_id, :calories, :protein, :carbs, :fat)";
+    $stmt = $db->prepare($sql);
+    $stmt->execute([
+        ':name' => $name,
+        ':user_id' => $user_id,
+        ':calories' => $calories,
+        ':protein' => $protein,
+        ':carbs' => $carbs,
+        ':fat' => $fat
+    ]);
+}
 
-
-
-
-// pro vypisovani se pouzije funkce json_encode
-// poslat veci do databaze podle user_id(pridat do db)
-// vytahnout vsechny veci daneho uzivatele z databaze a ty pak vypsat do Recent Meals z Calories.jsx
-
-
+echo json_encode(['status' => 'success']);
 ?>
