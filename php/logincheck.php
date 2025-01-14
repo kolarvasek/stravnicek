@@ -3,10 +3,10 @@ include 'db.php';
 session_start();
 
 header("Content-Type: application/json");
-header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Origin: http://localhost:5173"); // Set to the specific origin
 header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
-
+header("Access-Control-Allow-Credentials: true");
 
 $rawData = file_get_contents("php://input");
 $data = json_decode($rawData, true);
@@ -21,7 +21,7 @@ if(isset($data["email"]) && !empty($data["email"]) && filter_var($data["email"],
 if(isset($data["password"]) && !empty($data["password"])){
     $password = $data["password"];
 } else {
-    echo json_encode(["success" => false, "error" => "Password is required"]);
+    echo json_encode(["success" => false, "error" => "Password is empty"]);
     exit;
 }
 
@@ -37,15 +37,14 @@ try {
     if($user) {
         if(password_verify($password, $user['password'])){
             $_SESSION["ID"] = $user['ID']; 
-            echo json_encode(["success" => true, "message" => "User logged in successfully"]);
-            header("Location: /"); // Z NEJAKEHO DUVODU NEFUNGUJE
+            echo json_encode(["success" => true, "message" => "User was logged in", "user_id" => $_SESSION["ID"]]);            
         } else {
-            echo json_encode(["success" => false, "error" => "Invalid password"]);
+            echo json_encode(["success" => false, "error" => "Wrong pass"]);
         }
     } else {
-        echo json_encode(["success" => false, "error" => "User not found"]);
+        echo json_encode(["success" => false, "error" => "Email doesnt exist"]);
     }
 } catch (PDOException $e) {
-    echo json_encode(["success" => false, "error" => "Database error: " . $e->getMessage()]);
+    echo json_encode(["success" => false, "error" => "db error"]);
 }
 ?>

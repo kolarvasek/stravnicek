@@ -1,10 +1,12 @@
 import React, { useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const passwordRef = useRef();
   const [passwordSave, setPasswordSave] = useState("");
   const emailRef = useRef();
   const [emailSave, setEmailSave] = useState("");
+  const navigate = useNavigate();
 
   const updateInput = () => {
     setPasswordSave(passwordRef.current.value);
@@ -14,8 +16,6 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = { email: emailSave, password: passwordSave };
-    console.log(data);
-
     try {
       const response = await fetch(
         "http://localhost/stravnicek/php/logincheck.php",
@@ -24,23 +24,28 @@ const Login = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(data), // Convert value to JSON
+          credentials: "include", // Include credentials (cookies)
+          body: JSON.stringify(data),
         }
       );
 
       const text = await response.text();
-      console.log("Raw response:", text);
 
-      // Parse response only if it's valid JSON
       let parsedResponse;
       try {
         parsedResponse = JSON.parse(text);
         console.log(parsedResponse);
+
+        if (parsedResponse.success) {
+          navigate("/");
+        } else {
+          console.error("error loggin in:", parsedResponse.error);
+        }
       } catch (error) {
-        console.error("Error parsing JSON response:", text);
+        console.error("error with json", text);
       }
     } catch (error) {
-      console.error("Error sending data:", error);
+      console.error("error sending data", error);
     }
   };
 

@@ -17,23 +17,20 @@ const Register = () => {
                     headers: {
                         "Content-Type": "application/json",
                     },
-                    body: JSON.stringify(data), // Convert value to JSON
+                    body: JSON.stringify(data), 
                 }
             );
-            // ahong
             const text = await response.text();
-            console.log("Raw response:", text);
 
-            // Parse response only if it's valid JSON
             let parsedResponse;
             try {
                 parsedResponse = JSON.parse(text);
                 console.log(parsedResponse);
             } catch (error) {
-                console.error("Error parsing JSON response:", text);
+                console.error("error with json", text);
             }
         } catch (error) {
-            console.error("Error sending data:", error);
+            console.error("error to send data", error);
         }
     };
 

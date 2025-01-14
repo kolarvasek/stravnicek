@@ -45,7 +45,7 @@ const Meals = () => {
           )
         );
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("error getting data", error);
       }
     };
 

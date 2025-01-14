@@ -34,7 +34,7 @@ try {
 
     echo json_encode(["success" => true, "message" => "User registered successfully"]);
 } catch (PDOException $e) {
-    echo json_encode(["success" => false, "error" => "Database error: " . $e->getMessage()]);
+    echo json_encode(["success" => false, "error" => "db error"]);
 }
 
 ?>

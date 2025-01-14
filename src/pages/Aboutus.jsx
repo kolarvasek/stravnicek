@@ -6,7 +6,6 @@ const Aboutus = () => {
     <>
     <Navbar />
       <div className="flex flex-col items-center justify-center h-screen bg-gray-100 text-black pt-16">
-        {/* Add padding-top to prevent overlap with navbar */}
         <h1 className="text-4xl font-bold mb-4">About Us</h1>
         <p className="text-lg mb-2 text-center max-w-md">
           We are a team of passionate individuals committed to delivering
