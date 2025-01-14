@@ -1,19 +1,10 @@
 <?php
-include 'db.php'; // Zajistěte, že db.php neobsahuje žádný výstup
+include 'db.php'; 
 session_start();
 
-// Hlavičky pro CORS
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
-
-// Odpověď na preflight OPTIONS požadavky
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    http_response_code(200);
-    exit;
-}
-
-// Zpracování požadavku
 header("Content-Type: application/json");
 
 $rawData = file_get_contents("php://input");

@@ -1,101 +1,150 @@
 import React, { useState, useEffect } from "react";
+import MealModal from "../components/MealModal";
 import Navbar from "../components/Navbar";
-import Modal from "@mui/material/Modal";
-import { mealInfo } from "../components/Mealinfo";
-
 
 const Meals = () => {
-  const [open, setOpen] = useState(false);
-  const [nutritionData, setNutritionData] = useState(null);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [filteredMeals, setFilteredMeals] = useState([]);
-
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-
-  const meals = [
-    { name: "Egg", calories: 100, type: "Breakfast" },
-    { name: "Chicken Salad", calories: 200, type: "Lunch" },
-    { name: "Steak", calories: 300, type: "Dinner" },
-  ];
+  const [meals, setMeals] = useState([]);
+  const [selectedMeal, setSelectedMeal] = useState(null);
 
   useEffect(() => {
-    const fetchData = async () => {
-      if (!searchQuery) {
-        setFilteredMeals(meals);
-        return;
-      }
-
+    // Fetch meals from the server
+    const fetchMeals = async () => {
       try {
         const response = await fetch(
-          `https://api.calorieninjas.com/v1/nutrition?query=${searchQuery}`,
+          "http://localhost/stravnicek/php/server.php",
           {
             method: "GET",
             headers: {
-              "X-Api-Key": import.meta.env.VITE_CALORIES_API,
               "Content-Type": "application/json",
             },
+            credentials: "include",
           }
         );
         const result = await response.json();
-        setNutritionData(result);
-        setFilteredMeals(
-          meals.filter((meal) =>
-            meal.name.toLowerCase().includes(searchQuery.toLowerCase())
-          )
-        );
+        if (result.status === "success") {
+          setMeals(result.meals);
+        } else {
+          console.error("error getting meals", result.message);
+        }
       } catch (error) {
-        console.error("error getting data", error);
+        console.error("also error getting meals", error);
       }
     };
 
-    fetchData();
-  }, [searchQuery]);
+    fetchMeals();
+  }, []);
+
+  const categorizeMeals = (meals) => {
+    const breakfast = meals.filter(
+      (meal) => new Date(meal.time).getHours() < 12
+    );
+    const lunch = meals.filter(
+      (meal) =>
+        new Date(meal.time).getHours() >= 12 &&
+        new Date(meal.time).getHours() < 17
+    );
+    const dinner = meals.filter((meal) => new Date(meal.time).getHours() >= 17);
+    return { breakfast, lunch, dinner };
+  };
+
+  const { breakfast, lunch, dinner } = categorizeMeals(meals);
 
   return (
-    <div className="bg-gray-100 min-h-screen overscroll-none">
-      <Navbar />
-      <div className="pt-24 px-4 md:px-8">
-        <h1 className="text-3xl font-semibold text-gray-800 mb-4">Meals</h1>
-        <input
-          type="text"
-          placeholder="Search for meals"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="max-w-50 p-2 mb-4 border border-gray-300 rounded-md"
-        />
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
-          {filteredMeals.map((meal, index) => (
-            <div
-              key={index}
-              className="bg-white shadow-md rounded-lg p-4 h-64 overflow-y-auto"
-            >
-              <h2 className="text-xl font-semibold text-gray-800">
-                {meal.type}
-              </h2>
-              <p className="text-gray-600">{meal.name}</p>
-              <button
-                onClick={handleOpen}
-                className="mt-2 bg-slate-100 text-black p-2 rounded-md w-full flex justify-between items-center"
-              >
-                <p>{meal.name}</p>
-                <p>{meal.calories}</p>
-              </button>
-            </div>
-          ))}
+    <div className="p-4">
+        <Navbar />
+      <h2 className="text-2xl mb-4">Meals</h2>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div>
+          <h3 className="text-xl mb-2">Breakfast</h3>
+          <table className="min-w-full bg-white">
+            {breakfast.length > 0 ? (
+              breakfast.map((meal, index) => (
+                <tr key={index} onClick={() => setSelectedMeal(meal)}>
+                  <td className="py-2 px-4 border-b border-gray-200">
+                    {meal.name}
+                  </td>
+                  <td className="py-2 px-4 border-b border-gray-200">
+                    {meal.calories}
+                  </td>
+                  <td className="py-2 px-4 border-b border-gray-200">
+                    {meal.time}
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td
+                  colSpan="3"
+                  className="py-2 px-4 border-b border-gray-200 text-center"
+                >
+                  No meals found
+                </td>
+              </tr>
+            )}
+          </table>
+        </div>
+        <div>
+          <h3 className="text-xl mb-2">Lunch</h3>
+          <table className="min-w-full bg-white">
+            {lunch.length > 0 ? (
+              lunch.map((meal, index) => (
+                <tr key={index} onClick={() => setSelectedMeal(meal)}>
+                  <td className="py-2 px-4 border-b border-gray-200">
+                    {meal.name}
+                  </td>
+                  <td className="py-2 px-4 border-b border-gray-200">
+                    {meal.calories}
+                  </td>
+                  <td className="py-2 px-4 border-b border-gray-200">
+                    {meal.time}
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td
+                  colSpan="3"
+                  className="py-2 px-4 border-b border-gray-200 text-center"
+                >
+                  No meals found
+                </td>
+              </tr>
+            )}
+          </table>
+        </div>
+        <div>
+          <h3 className="text-xl mb-2">Dinner</h3>
+          <table className="min-w-full bg-white">
+            {dinner.length > 0 ? (
+              dinner.map((meal, index) => (
+                <tr key={index} onClick={() => setSelectedMeal(meal)}>
+                  <td className="py-2 px-4 border-b border-gray-200">
+                    {meal.name}
+                  </td>
+                  <td className="py-2 px-4 border-b border-gray-200">
+                    {meal.calories}
+                  </td>
+                  <td className="py-2 px-4 border-b border-gray-200">
+                    {meal.time}
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td
+                  colSpan="3"
+                  className="py-2 px-4 border-b border-gray-200 text-center"
+                >
+                  No meals found
+                </td>
+              </tr>
+            )}
+          </table>
         </div>
       </div>
-
-      <Modal open={open} onClose={handleClose}>
-        <div className="flex justify-center items-center h-screen bg-black bg-opacity-50">
-          <div className="bg-white text-black shadow-lg rounded-lg p-6 w-96">
-            <h2 className="text-xl font-semibold mb-4 text-center">
-              Your meal
-            </h2>
-            <p>Data from databse</p>
-          </div>
-        </div>
-      </Modal>
+      {selectedMeal && (
+        <MealModal meal={selectedMeal} onClose={() => setSelectedMeal(null)} />
+      )}
     </div>
   );
 };
