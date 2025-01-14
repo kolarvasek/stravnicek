@@ -3,6 +3,7 @@ import Navbar from "../components/Navbar";
 import Modal from "@mui/material/Modal";
 import { mealInfo } from "../components/Mealinfo";
 
+
 const Meals = () => {
   const [open, setOpen] = useState(false);
   const [nutritionData, setNutritionData] = useState(null);
@@ -44,7 +45,7 @@ const Meals = () => {
           )
         );
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("error getting data", error);
       }
     };
 

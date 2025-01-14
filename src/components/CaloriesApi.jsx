@@ -5,8 +5,7 @@ const CaloriesApi = ({ query }) => {
   const [nutritionData, setNutritionData] = useState(null);
   const apiKey = import.meta.env.VITE_CALORIES_API;
 
-  // Fetch data from the CalorieNinjas API
-  useEffect(() => {
+  useEffect(() => { // kdyz poslu input tak to posle dotaz na api a vrati nut. hodnoty
     const fetchData = async () => {
       try {
         const response = await fetch(
@@ -22,19 +21,17 @@ const CaloriesApi = ({ query }) => {
         const result = await response.json();
         setNutritionData(result);
 
-        // Send nutrition data to the backend
         if (result.items && result.items.length > 0) {
-          await sendNutritionData(result.items);
+          await sendNutritionData(result.items); // posilam na backend(server.php)
         }
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("error getting data:", error);
       }
     };
     fetchData();
   }, [apiKey, query]);
 
-  // Send nutrition data to the backend
-  const sendNutritionData = async (data) => {
+  const sendNutritionData = async (data) => { // jsou ty data posilani
     try {
       const response = await fetch(
         "http://localhost/stravnicek/php/server.php",
@@ -43,30 +40,28 @@ const CaloriesApi = ({ query }) => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ items: data }), // Convert value to JSON
+          body: JSON.stringify({ items: data }), // prevod na json 
         }
       );
 
       const text = await response.text();
       console.log("Raw response:", text);
 
-      // Parse response only if it's valid JSON
       let parsedResponse;
       try {
         parsedResponse = JSON.parse(text);
         console.log(parsedResponse);
       } catch (error) {
-        console.error("Error parsing JSON response:", text);
+        console.error("error with json data", text);
       }
     } catch (error) {
-      console.error("Error sending data:", error);
+      console.error("error sending data", error);
     }
   };
 
   return (
     <div>
       <h1>Nutrition Data</h1>
-
     </div>
   );
 };

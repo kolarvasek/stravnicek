@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Modal from "@mui/material/Modal";
 import { mealInfo } from "../components/Mealinfo";
 
@@ -26,15 +26,14 @@ const LogInfo = () => {
       const result = await response.json();
       setNutritionData(result);
 
-      // Send the nutrition data to the backend
-      await sendNutritionData(result.items);
+      await sendNutritionData(result.items); // backend
       setOpen(false);
     } catch (error) {
-      console.error("Error fetching data:", error);
+      console.error("error getting data", error);
     }
   };
 
-  const sendNutritionData = async (data) => {
+  const sendNutritionData = async (data) => { // backend
     try {
       const response = await fetch(
         "http://localhost/stravnicek/php/server.php",
@@ -43,23 +42,22 @@ const LogInfo = () => {
           headers: {
             "Content-Type": "application/json",
           },
+          credentials: "include", // Include credentials (cookies)
           body: JSON.stringify({ items: data }), // Convert value to JSON
         }
       );
 
       const text = await response.text();
-      console.log("Raw response:", text);
 
-      // Parse response only if it's valid JSON
       let parsedResponse;
-      try {
+      try { // json
         parsedResponse = JSON.parse(text);
         console.log(parsedResponse);
       } catch (error) {
-        console.error("Error parsing JSON response:", text);
+        console.error("error with json", text);
       }
     } catch (error) {
-      console.error("Error sending data:", error);
+      console.error("error to send data", error);
     }
   };
 

@@ -19,22 +19,20 @@ header("Content-Type: application/json");
 $rawData = file_get_contents("php://input");
 $data = json_decode($rawData, true);
 
-// Validace emailu
-if (!isset($data["email"]) || empty($data["email"]) || !filter_var($data["email"], FILTER_VALIDATE_EMAIL)) {
+if (isset($data["email"]) && !empty($data["email"]) && filter_var($data["email"], FILTER_VALIDATE_EMAIL)) {
+    $email = $data["email"];
+} else {
     echo json_encode(["success" => false, "error" => "Invalid email"]);
     exit;
 }
 
-// Validace hesla
-if (!isset($data["password"]) || empty($data["password"])) {
+if (isset($data["password"]) && !empty($data["password"])) {
+    $password = password_hash($data["password"], PASSWORD_BCRYPT); 
+} else {
     echo json_encode(["success" => false, "error" => "Password is required"]);
     exit;
 }
 
-$email = $data["email"];
-$password = hash('sha256', $data["password"]); // Hashování hesla
-
-// Vložení do databáze
 try {
     $sql = "INSERT INTO users (email, password, time) VALUES (:email, :password, NOW())";
     $stmt = $db->prepare($sql);
@@ -45,6 +43,7 @@ try {
 
     echo json_encode(["success" => true, "message" => "User registered successfully"]);
 } catch (PDOException $e) {
-    echo json_encode(["success" => false, "error" => "Database error: " . $e->getMessage()]);
+    echo json_encode(["success" => false, "error" => "db error"]);
 }
+
 ?>
