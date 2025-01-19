@@ -3,7 +3,7 @@ include 'db.php';
 session_start();
 
 header("Content-Type: application/json");
-header("Access-Control-Allow-Origin: http://localhost:5174");
+header("Access-Control-Allow-Origin: https://kolarva23.sps-prosek.cz");
 header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 header("Access-Control-Allow-Credentials: true");
@@ -44,10 +44,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 ':fat' => $fat
             ]);
         }
-
-        echo json_encode(['status' => 'good']);
     } catch (PDOException $e) {
-        echo json_encode(['status' => 'error', 'message' => 'error: ' . $e->getMessage()]);
+        echo json_encode($e->getMessage());
     }
 } elseif ($_SERVER['REQUEST_METHOD'] == 'GET') { // ziskani jidel do Calories.jsx
     if (!isset($_SESSION['ID'])) {

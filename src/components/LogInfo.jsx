@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import Modal from "@mui/material/Modal";
-import { mealInfo } from "../components/Mealinfo";
 
-const LogInfo = () => {
+const LogInfo = ({ onMealAdded }) => {
   const [inputSearch, setInputSearch] = useState("");
   const [open, setOpen] = useState(false);
   const [nutritionData, setNutritionData] = useState(null);
@@ -26,38 +25,37 @@ const LogInfo = () => {
       const result = await response.json();
       setNutritionData(result);
 
-      await sendNutritionData(result.items); // backend
+      await sendNutritionData(result.items); 
       setOpen(false);
+      
+      if (onMealAdded) { 
+        onMealAdded();
+      }
     } catch (error) {
-      console.error("error getting data", error);
+      console.error(error);
     }
   };
 
-  const sendNutritionData = async (data) => { // backend
+  const sendNutritionData = async (data) => {
     try {
       const response = await fetch(
-        "http://localhost/stravnicek/php/server.php",
+        "https://kolarva23.sps-prosek.cz/api/server.php",
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          credentials: "include", // Include credentials (cookies)
-          body: JSON.stringify({ items: data }), // Convert value to JSON
+          credentials: "include",
+          body: JSON.stringify({ items: data }),
         }
       );
 
-      const text = await response.text();
-
-      let parsedResponse;
-      try { // json
-        parsedResponse = JSON.parse(text);
-        console.log(parsedResponse);
-      } catch (error) {
-        console.error("error with json", text);
+      const result = await response.json();
+      if (result.status === "success") {
+        return result;
       }
     } catch (error) {
-      console.error("error to send data", error);
+      return null;
     }
   };
 
@@ -86,7 +84,7 @@ const LogInfo = () => {
               <input
                 type="text"
                 name="mealName"
-                placeholder="Enter meal"
+                placeholder="Enter meal size and name(100g of chicken)"
                 className="border border-gray-300 rounded-md p-2 mb-3 w-full"
                 onChange={(e) => setInputSearch(e.target.value)}
               />
@@ -97,7 +95,6 @@ const LogInfo = () => {
                 Submit
               </button>
             </form>
-            {mealInfo(nutritionData)}
           </div>
         </div>
       </Modal>

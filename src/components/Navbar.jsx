@@ -19,12 +19,6 @@ const Navbar = () => {
           >
             Meals
           </button>
-          <button
-            onClick={() => navigate("/analytics")}
-            className="text-lg font-semibold"
-          >
-            Analytics
-          </button>
         </div>
         <button
           onClick={() => navigate("/logout")}

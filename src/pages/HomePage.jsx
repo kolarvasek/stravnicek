@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router'
 import Navbar from '../components/Navbar'
 import Calorie from '../components/Calories'
@@ -6,8 +6,30 @@ import Calorie from '../components/Calories'
 const HomePage = () => {
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const checkLogin = async () => {
+      try {
+        const response = await fetch("https://kolarva23.sps-prosek.cz/api/server.php", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        });
+        const result = await response.json();
+        if (result.status !== "success") {
+          navigate("/login");
+        }
+      } catch (error) {
+        navigate("/login");
+      }
+    };
+
+    checkLogin();
+  }, [navigate]);
+
   return (
-    <div className="overscroll-y-none	">
+    <div className="overscroll-y-none">
       <Navbar />
       <Calorie />
     </div>

@@ -34,7 +34,7 @@ const CaloriesApi = ({ query }) => {
   const sendNutritionData = async (data) => { // jsou ty data posilani
     try {
       const response = await fetch(
-        "http://localhost/stravnicek/php/server.php",
+        "https://kolarva23.sps-prosek.cz/api/server.php",
         {
           method: "POST",
           headers: {
