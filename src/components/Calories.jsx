@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { LineChart } from "@mui/x-charts/LineChart";
-import Navbar from "../components/Navbar";
-import LogInfo from "../components/LogInfo";
-import { useNavigate } from "react-router-dom";
+import { PieChart } from "@mui/x-charts/PieChart";
+import { BarChart } from "@mui/x-charts/BarChart";
+import LogInfo from "./LogInfo";
 
-const Calories = () => {
-  const [chartKalorie, setChartKalorie] = useState([]);
+const Dashboard = () => {
   const [meals, setMeals] = useState([]);
+  const [dailyPieData, setDailyPieData] = useState([]);
+  const [weeklyData, setWeeklyData] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchMeals();
+  }, []);
 
   const fetchMeals = async () => {
     try {
@@ -14,129 +19,121 @@ const Calories = () => {
         "https://kolarva23.sps-prosek.cz/api/server.php",
         {
           method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
           credentials: "include",
         }
       );
-
       const result = await response.json();
-      if (result.status === "success") {
+      if (result.status === "success" && result.meals) {
         setMeals(result.meals);
-        updateChart(result.meals);
+        updateCharts(result.meals);
       } else {
-        console.error("error getting meals ");
+        console.error("Error fetching meals");
       }
     } catch (error) {
-      console.error("also error getting meals ", error);
+      console.error("Fetch error:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
-  useEffect(() => {
-    fetchMeals();
-  }, []);
+  const updateCharts = (meals) => {
+    const today = new Date().toDateString();
+    let breakfast = 0,
+      lunch = 0,
+      dinner = 0;
 
-  // graf
-  const updateChart = (meals) => {
-    const dailyCalories = Array(31).fill(0);
     meals.forEach((meal) => {
-      const date = new Date(meal.time);
-      const day = date.getDate();
-      const calories = Number(meal.calories);
-      dailyCalories[day - 1] += calories;
+      const mealTime = new Date(meal.time);
+      if (mealTime.toDateString() !== today) return;
+      const cal = Number(meal.calories);
+      const hour = mealTime.getHours();
+      if (hour < 12) breakfast += cal;
+      else if (hour < 17) lunch += cal;
+      else dinner += cal;
     });
-    setChartKalorie(dailyCalories);
+
+    setDailyPieData([
+      { label: "Breakfast", value: breakfast || 1, color: "#FFA726" },
+      { label: "Lunch", value: lunch || 1, color: "#66BB6A" },
+      { label: "Dinner", value: dinner || 1, color: "#42A5F5" },
+    ]);
+
+    // Weekly meal data
+    const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    const weeklyCalories = new Array(7).fill(0);
+
+    meals.forEach((meal) => {
+      const mealTime = new Date(meal.time);
+      const dayIndex = mealTime.getDay();
+      weeklyCalories[dayIndex] += Number(meal.calories);
+    });
+
+    setWeeklyData(weeklyCalories);
   };
 
-  const navigate = useNavigate();
   return (
-    <div className="bg-gray-100 min-h-screen overscroll-none">
-      <Navbar />
-      <div className="pt-24 px-4 md:px-8">
-        <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 gap-4">
-          {/* Recent Meals */}
-          <div className="shadow-xl hover:shadow-2xl transition-all duration-300 ease-in-out p-6 rounded-lg bg-slate-200 max-h-96">
-            <button
-              onClick={() => navigate("/meals")}
-              className="w-full h-full"
-            >
-              <h3 className="text-center text-2xl sm:text-3xl font-semibold text-gray-800 mb-4">
-                Recent Meals
-              </h3>
-              <div className="scrollBox overflow-x-auto overflow-y-auto max-h-72">
-                <table className="min-w-full bg-white table-auto border-collapse">
-                  <thead>
-                    <tr>
-                      <th className="py-2 px-4 border-b border-gray-200 text-left text-sm sm:text-base">
-                        Name
-                      </th>
-                      <th className="py-2 px-4 border-b border-gray-200 text-left text-sm sm:text-base">
-                        Calories
-                      </th>
-                      <th className="py-2 px-4 border-b border-gray-200 text-left text-sm sm:text-base">
-                        Protein
-                      </th>
-                      <th className="py-2 px-4 border-b border-gray-200 text-left text-sm sm:text-base">
-                        Fats
-                      </th>
-                      <th className="py-2 px-4 border-b border-gray-200 text-left text-sm sm:text-base">
-                        Time
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {meals.length > 0 ? (
-                      meals.slice(-5).map((meal, index) => (
-                        <tr key={index}>
-                          <td className="py-2 px-4 border-b border-gray-200 text-sm sm:text-base">
-                            {meal.name}
-                          </td>
-                          <td className="py-2 px-4 border-b border-gray-200 text-sm sm:text-base">
-                            {meal.calories}
-                          </td>
-                          <td className="py-2 px-4 border-b border-gray-200 text-sm sm:text-base">
-                            {meal.protein}
-                          </td>
-                          <td className="py-2 px-4 border-b border-gray-200 text-sm sm:text-base">
-                            {meal.fats}
-                          </td>
-                          <td className="py-2 px-4 border-b border-gray-200 text-sm sm:text-base">
-                            {new Date(meal.time).toLocaleString()}
-                          </td>
-                        </tr>
-                      ))
-                    ) : (
-                      <tr>
-                        <td
-                          colSpan="5"
-                          className="py-2 px-4 border-b border-gray-200 text-center text-gray-600 align-middle"
-                        >
-                          No meals found
-                        </td>
-                      </tr>
-                    )}
-                  </tbody>
-                </table>
-              </div>
-            </button>
-          </div>
-          {/* Calorie Chart */}
-          <div className="shadow-xl hover:shadow-2xl transition-all duration-300 ease-in-out p-6 rounded-lg bg-slate-200 max-h-96">
+    <div className="max-w-6xl mx-auto pt-16 pb-10 px-6 min-h-screen bg-gray-900 text-white">
+      {/* Header */}
+      <div className="bg-gray-800 rounded-lg shadow-lg p-8 mb-8 text-center">
+        <h1 className="text-4xl font-bold">Stravnicek Dashboard</h1>
+        <p className="mt-2 text-lg text-gray-400">
+          Monitor your daily and weekly calorie intake.
+        </p>
+      </div>
+
+      {loading ? (
+        <div className="text-center text-xl text-gray-400 animate-pulse">
+          Loading data...
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {/* Daily Intake Pie Chart */}
+          <div className="bg-gray-800 rounded-lg shadow-lg p-6">
+            <h2 className="text-2xl font-semibold text-center mb-4">
+              Daily Intake Breakdown
+            </h2>
             <div className="flex justify-center">
-              <LineChart
-                xAxis={[{ data: Array.from({ length: 31 }, (_, i) => i + 1) }]}
-                series={[{ data: chartKalorie }]}
-                width={window.innerWidth < 768 ? 300 : 500}
-                height={window.innerWidth < 768 ? 200 : 300}
+              <PieChart
+                series={[{ data: dailyPieData }]}
+                width={300}
+                height={300}
               />
             </div>
           </div>
+
+          {/* Weekly Intake Bar Chart */}
+          <div className="bg-gray-800 rounded-lg shadow-lg p-6">
+            <h2 className="text-2xl font-semibold text-center mb-4">
+              Weekly Meal Breakdown
+            </h2>
+            <div className="flex justify-center">
+              {weeklyData.every((val) => val === 0) ? (
+                <p className="text-gray-400 text-center">No data available</p>
+              ) : (
+                <BarChart
+                  xAxis={[
+                    {
+                      scaleType: "band",
+                      data: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+                    },
+                  ]}
+                  series={[{ data: weeklyData, color: "#E91E63" }]}
+                  width={500}
+                  height={300}
+                />
+              )}
+            </div>
+          </div>
         </div>
+      )}
+
+      {/* Log Meal Section */}
+      <div className="mt-8 bg-gray-800 rounded-lg shadow-lg p-6">
         <LogInfo onMealAdded={fetchMeals} />
       </div>
     </div>
   );
 };
 
-export default Calories;
+export default Dashboard;

@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react'
-import { useNavigate } from 'react-router'
-import Navbar from '../components/Navbar'
-import Calorie from '../components/Calories'
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import Navbar from "../components/Navbar";
+import Dashboard from "../components/Calories";
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -29,11 +29,11 @@ const HomePage = () => {
   }, [navigate]);
 
   return (
-    <div className="overscroll-y-none">
+    <div className="min-h-screen bg-white">
       <Navbar />
-      <Calorie />
+      <Dashboard />
     </div>
   );
-}
+};
 
-export default HomePage
+export default HomePage;
